@@ -11,8 +11,6 @@ exec > >(tee $LOG_FILE) 2>&1
 TIMEFORMAT=%lR
 # For faster performance, don't audit dependencies automatically.
 export COMPOSER_NO_AUDIT=1
-# For faster performance, don't install dev dependencies.
-export COMPOSER_NO_DEV=1
 
 #== Remove root-owned files.
 echo
@@ -32,8 +30,7 @@ else
   time source .devpanel/composer_setup.sh
   echo
 fi
-# If update fails, change it to install.
-time composer -n update --no-dev --no-progress
+time composer -n update --no-progress
 
 #== Create the private files directory.
 if [ ! -d private ]; then
@@ -53,7 +50,9 @@ fi
 echo
 if [ -z "$(drush status --field=db-status)" ]; then
   echo 'Install Drupal.'
-  time drush -n si
+  until time drush -n si drupal_cms_installer installer_site_template_form.add_ons=lupus_decoupled_starter; do
+    :
+  done
 
   echo
   echo 'Tell Automatic Updates about Composer plugins.'

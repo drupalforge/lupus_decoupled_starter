@@ -24,6 +24,13 @@ if [ -z "$(drush status --field=db-status)" ]; then
     drush sqlq --file=../.devpanel/dumps/db.sql.gz
     gzip .devpanel/dumps/db.sql
   fi
+  # We apply the AI recipe here to give every container its own key.
+  echo 'Apply drupal_cms_ai recipe.'
+  RECIPES_PATH=$(drush --include=.devpanel/drush crp)
+  until time drush --include=.devpanel/drush -q recipe "$RECIPES_PATH/drupal_cms_ai" -i drupal_cms_ai.provider=amazeeai; do
+    time drush cr
+  done
+  drush -n cset klaro.klaro_app.deepchat status 0
 fi
 
 if [[ -n "$DB_SYNC_VOL" ]]; then

@@ -24,6 +24,7 @@ if (!empty($realpath)) {
   $settings['file_private_path'] = $realpath;
 }
 $settings['trusted_host_patterns'][] = getenv('DP_HOSTNAME') ?: '.*';
+$settings['testing_package_manager'] = TRUE;
 
 // When running in a development container, trust reverse proxy headers.
 if (getenv('DRUPALFORGE_DEVCONTAINER') && isset($_SERVER['HTTP_X_FORWARDED_HOST'], $_SERVER['REMOTE_ADDR'])) {
