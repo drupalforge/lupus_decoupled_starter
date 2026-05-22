@@ -54,3 +54,4 @@ echo
 echo 'Populate caches.'
 drush cache:warm &> /dev/null || :
 .devpanel/warm
+.devpanel/warm /user/login
