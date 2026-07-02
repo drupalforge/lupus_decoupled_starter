@@ -20,6 +20,8 @@ Files in the `.devpanel` directory control DevPanel deployment for this app.
     script. Make sure this works with your Composer project.
   - [`warm`](warm): Loads any path to build caches. If no path is provided,
     defaults to /.
+- [`Dockerfile`](Dockerfile): Provides the `COMPOSER_HOME` variable required by
+  the Drupal Automatic Updates web UI.
 
 
 ## Git integration
