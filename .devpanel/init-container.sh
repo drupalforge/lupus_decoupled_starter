@@ -29,8 +29,8 @@ if [ -z "$(drush status --field=db-status)" ]; then
   echo
   echo 'Apply drupal_cms_ai recipe.'
   RECIPES_PATH=$(drush --include=.devpanel/drush crp)
-  until time dr -q recipe "$RECIPES_PATH/drupal_cms_ai" -i drupal_cms_ai.provider=amazeeai; do
-    time dr cr
+  until time drush -q recipe "$RECIPES_PATH/drupal_cms_ai" -i drupal_cms_ai.provider=amazeeai; do
+    time drush cr
   done
   drush -n cset klaro.klaro_app.deepchat status 0
 fi
@@ -52,7 +52,7 @@ fi
 drush -n updb
 echo
 echo 'Run cron.'
-dr cron
+drush cron
 echo
 echo 'Populate caches.'
 drush cache:warm &> /dev/null || :

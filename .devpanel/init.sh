@@ -34,7 +34,12 @@ else
   time source .devpanel/composer_setup.sh
   echo
 fi
-time composer -n update --no-progress
+if grep '"drupal/core-recommended": "^11.3' composer.json &> /dev/null; then
+  # Drupal CMS has not been updated to work with Drupal 11.4.
+  time composer -n update --no-progress --no-install
+  time composer -n update drupal/core:11.3.* drupal/core-*:11.3.* -W --no-progress --no-install
+fi
+time composer -n install --no-progress
 
 #== Create the private files directory.
 if [ ! -d private ]; then
@@ -70,7 +75,7 @@ if [ -z "$(drush status --field=db-status)" ]; then
   time drush ev '\Drupal::moduleHandler()->invoke("automatic_updates", "modules_installed", [[], FALSE])'
 
   echo
-  time dr cr
+  time drush cr
 else
   echo 'Update database.'
   time drush -n updb
@@ -79,7 +84,7 @@ fi
 #== Warm up caches.
 echo
 echo 'Run cron.'
-time dr cron
+time drush cron
 echo
 echo 'Populate caches.'
 time drush cache:warm &> /dev/null || :
