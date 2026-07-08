@@ -12,7 +12,6 @@
 /LICENSE*
 /logs/*
 !/logs/.gitkeep
-/packages.json
 /patches.lock.json
 /private/
 /README*

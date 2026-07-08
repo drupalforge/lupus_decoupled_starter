@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+export PATH="$APP_ROOT/vendor/bin:$PATH"
 if [ -n "${DEBUG_SCRIPT:-}" ]; then
   set -x
 fi
@@ -34,11 +35,6 @@ else
   time source .devpanel/composer_setup.sh
   echo
 fi
-if grep '"drupal/core-recommended": "^11.3' composer.json &> /dev/null; then
-  # Drupal CMS has not been updated to work with Drupal 11.4.
-  time composer -n update --no-progress --no-install
-  time composer -n update drupal/core:11.3.* drupal/core-*:11.3.* -W --no-progress --no-install
-fi
 time composer -n install --no-progress
 
 #== Create the private files directory.
@@ -67,6 +63,14 @@ if [ -z "$(drush status --field=db-status)" ]; then
     :
   done
 
+  if grep '"drupal/core-recommended": "^11.3' composer.json &> /dev/null; then
+    # Update to Drupal 11.4 after installation succeeds.
+    chmod +w web/sites/default
+    time composer -n update --no-progress
+    time composer scaffold
+    time drush -n updb
+  fi
+
   echo
   echo 'Enable Automatic Updates.'
   drush -n cset --input-format=yaml package_manager.settings additional_trusted_composer_plugins '["cweagans/composer-patches","drupal/site_template_helper","symfony/runtime"]'
@@ -94,6 +98,7 @@ time .devpanel/warm /user/login
 #== Fix ownership for strict permissions.
 echo
 echo 'Fix ownership for strict permissions.'
+time sudo chmod 775 -R web/sites/default/files
 time sudo chown -R ${APACHE_RUN_USER:=www-data} web/sites/default/files private config/sync
 
 #== Finish measuring script time.
