@@ -59,9 +59,14 @@ fi
 echo
 if [ -z "$(drush status --field=db-status)" ]; then
   echo 'Install Drupal.'
-  until time drush -n si drupal_cms_installer installer_site_template_form.add_ons=lupus_decoupled_starter; do
-    :
-  done
+  # Outside DDEV/dev container, fail immediately on the first install error.
+  if [ -z "${DRUPALFORGE_DEVCONTAINER:-}" ] && [ "${IS_DDEV_PROJECT:-}" != "true" ]; then
+    time drush -n si drupal_cms_installer installer_site_template_form.add_ons=lupus_decoupled_starter
+  else
+    until time drush -n si drupal_cms_installer installer_site_template_form.add_ons=lupus_decoupled_starter; do
+      :
+    done
+  fi
 
   if grep '"drupal/core-recommended": "^11.3' composer.json &> /dev/null; then
     # Update to Drupal 11.4 after installation succeeds.
