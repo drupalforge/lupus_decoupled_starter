@@ -99,7 +99,6 @@ fi
 php web/modules/contrib/automatic_updates/auto-update
 
 #== Warm up caches.
-echo
 echo 'Run cron.'
 drush cron
 echo

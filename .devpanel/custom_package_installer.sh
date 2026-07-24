@@ -61,7 +61,7 @@ if $PECL_UPDATED && /etc/init.d/apache2 status > /dev/null; then
   /etc/init.d/apache2 reload
 fi
 
-if [ -n "$APP_ROOT/.devpanel/crontab" ]; then
+if [ -f "$APP_ROOT/.devpanel/crontab" ]; then
   # Install supercronic.
   if ! command -v supercronic >/dev/null 2>&1; then
     curl -fsSL "https://github.com/aptible/supercronic/releases/latest/download/supercronic-linux-$(dpkg --print-architecture)" \

@@ -68,12 +68,6 @@ if [ -z "$(drush status --field=db-status)" ]; then
     done
   fi
 
-  if grep '"drupal/core-recommended": "^11.3' composer.json &> /dev/null; then
-    # Update to Drupal 11.4 after installation succeeds.
-    time composer -n update --no-progress
-    time drush -n updb
-  fi
-
   echo
   echo 'Enable Automatic Updates.'
   drush -n cset --input-format=yaml package_manager.settings additional_trusted_composer_plugins '["cweagans/composer-patches","drupal/site_template_helper","symfony/runtime"]'

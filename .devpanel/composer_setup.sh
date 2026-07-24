@@ -263,9 +263,3 @@ composer require -n --no-update \
     svg-pan-zoom/svg-pan-zoom \
     tabby/tabby \
     tippyjs/tippyjs
-
-if grep '"drupal/core-recommended": "^11.3' composer.json &> /dev/null; then
-    # Drupal CMS has not been updated for Drupal 11.4.
-    composer -n update --no-install
-    composer -n update -W --no-install drupal/core:11.3.* drupal/core-*:11.3.*
-fi
