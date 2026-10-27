@@ -249,6 +249,7 @@ composer config repositories.codemirror '{
 composer require -n --no-update \
     codemirror/codemirror \
     cweagans/composer-patches \
+    drupal/drupal_cms_admin_ui:^2 \
     drupal/lupus_decoupled_starter \
     jquery/image-picker \
     jquery/inputmask \
