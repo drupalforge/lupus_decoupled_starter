@@ -249,6 +249,10 @@ composer config repositories.codemirror '{
 composer require -n --no-update \
     codemirror/codemirror \
     cweagans/composer-patches \
+    drupal/drupal_cms_admin_ui \
+    drupal/drupal_cms_authentication \
+    drupal/drupal_cms_media \
+    drupal/drupal_cms_seo_basic \
     drupal/lupus_decoupled_starter \
     jquery/image-picker \
     jquery/inputmask \
